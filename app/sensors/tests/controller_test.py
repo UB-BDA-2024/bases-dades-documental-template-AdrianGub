@@ -52,7 +52,7 @@ def test_post_sensor_1_data_():
     assert response.status_code == 200
 
 def test_post_sensor_2_data():
-    response = client.post("/sensors/2/data", json={"velocity": 45.0,"battery_level": 1.0, "last_seen": "2020-01-01T00:00:00.000Z"})
+    response = client.post("/sensors/2/data", json={"velocity": 45.0, "battery_level": 1.0, "last_seen": "2020-01-01T00:00:00.000Z"})
     assert response.status_code == 200
 
 def test_get_sensor_1_data():
@@ -89,11 +89,11 @@ def test_get_sensor_data_not_exists():
     assert "Sensor not found" in response.text
 
 def test_update_sensor_1_data():
-    response = client.post("/sensors/1/data", json={"temperature": 2.0, "humidity": 2.0, "battery_level": 1.9, "last_seen": "2020-01-01T00:00:01.000Z"})
+    response = client.post("/sensors/1/data", json={"velocity": 0, "temperature": 2.0, "humidity": 2.0, "battery_level": 1.9, "last_seen": "2020-01-01T00:00:01.000Z"})
     assert response.status_code == 200
 
 def test_update_sensor_2_data():
-    response = client.post("/sensors/2/data", json={"velocity": 46.0,"battery_level": 1.9, "last_seen": "2020-01-01T00:00:01.000Z"})
+    response = client.post("/sensors/2/data", json={"velocity": 46.0, "battery_level": 1.9, "last_seen": "2020-01-01T00:00:01.000Z"})
     assert response.status_code == 200
 
 def test_get_sensor_1_data_updated():
@@ -119,15 +119,7 @@ def test_get_sensor_2_data_updated():
     assert json["velocity"] == 46.0
     assert json["battery_level"] == 1.9
     assert json["last_seen"] == "2020-01-01T00:00:01.000Z"
-
-def test_delete_sensor_1():
-    response = client.delete("/sensors/1")
-    assert response.status_code == 200
-
-def test_delete_sensor_2():
-    response = client.delete("/sensors/2")
-    assert response.status_code == 200
-
+   
 def test_get_near():
     response = client.get("/sensors/near?latitude=1.0&longitude=1.0&radius=1")
     assert response.status_code == 200
@@ -143,3 +135,11 @@ def test_get_near():
     assert json[1]["velocity"] == 46.0
     assert json[1]["battery_level"] == 1.9
     assert json[1]["last_seen"] == "2020-01-01T00:00:01.000Z"
+     
+def test_delete_sensor_1():
+    response = client.delete("/sensors/1")
+    assert response.status_code == 200
+
+def test_delete_sensor_2():
+    response = client.delete("/sensors/2")
+    assert response.status_code == 200
