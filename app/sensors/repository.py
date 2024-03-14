@@ -29,7 +29,8 @@ def create_sensor(db: Session, sensor: schemas.SensorCreate, mongodb_client: Mon
     # Insert sensor info
     mongodb_client.getDatabase("mydatabase")
     mongo_info = sensor.dict()
-    mongodb_client.getCollection("sensors").insert_one(mongo_info)
+    mongodb_client.getCollection("sensors")
+    mongodb_client.insert(mongo_info)
     return db_sensor
 
 # Record sensor data
@@ -40,7 +41,8 @@ def record_data(redis: Session, sensor_id: int, data: schemas.SensorData, mongod
     
     # Get sensor data from Mongo and pop _id
     mongodb_client.getDatabase("mydatabase")
-    mongo_info = mongodb_client.getCollection("sensors").find_one({'name': sensor_name})
+    mongodb_client.getCollection("sensors")
+    mongo_info = mongodb_client.find({'name': sensor_name})
     redis_dict = json.loads(redis_data)
     mongo_info.pop('_id', None)
     
@@ -56,7 +58,8 @@ def get_data(redis: Session, sensor_id: int, mongodb_client: MongoDBClient, sens
     
     # Get Mongo data and pop _id
     mongodb_client.getDatabase("mydatabase")
-    mongo_info = mongodb_client.getCollection("sensors").find_one({'name': sensor_name})
+    mongodb_client.getCollection("sensors")
+    mongo_info = mongodb_client.find({'name': sensor_name})
     redis_dict = json.loads(redis_data)
     mongo_info.pop('_id', None)
     
